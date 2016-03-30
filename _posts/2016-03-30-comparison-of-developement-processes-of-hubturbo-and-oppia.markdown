@@ -30,7 +30,7 @@ Its readme.md directed contributors to the developer guide that contained intruc
 **Oppia**<br> 
 Its readme.md contained a short summary of the instructions for set up and had a link to the full instructions.    
 
-**Discussion and Recommendations** CAN IMPROVE <br> 
+**Discussion and Recommendations**<br> 
 In my opinion, Oppia's short summary of set up instructions is great for a new contributor who is already familiar with the project's stack. He can set up the project quickly with the essential steps described in the  projects' readme.md and does not have to read the details in the full set up instructions that he might already know. Currently, HubTurbo's readme.md does not contain a brief summary of the set up instructions but I feel that they can consider including it. 
 
 ### Development Process 
