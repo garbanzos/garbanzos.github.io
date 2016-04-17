@@ -41,7 +41,7 @@ Upon receiving the request, the server sends the HTTP responses to the client. E
 To support the communication between the client and server described above, the Web also consists of some software components. At the client side, we have a web browser performs various functions such as display the web page, manage sessions, perform access control and send HTTP requests. At the server side, we have a web server that receives the client requests. After which, it proceeds to extract input from the client data and constructs requests to the back-end server and return resources requested by the client. 
 
 A image that summarizes the interactions of a simple architecture: 
-![web-interaction]({{ site.url }}/assets/web-interation.PNG)
+![web-interaction]({{ site.url }}/assets/web-interaction.PNG)
 
 #### **Web Security** 
 

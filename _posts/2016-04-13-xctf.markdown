@@ -14,14 +14,15 @@ Here's the problem:
 
 When you click the Wonder Woman link, you find the following image: 
 
-![wonder-woman]({{ site.url }}/assets/WW-png_.png) 
+<img src="{{ site.url }}/assets/WW-png_.png" height="500"/>
+
  
 #### **The Solution**
 We know that the challenge is a steganography problem. Hence, we would expect the flag to be embedded in the image provided. 
 
 Firstly, we examine the file type of the image and we realise that it is a Portable Network Graphic (PNG). With that information, we can do a quick search and find out about some characteristics of a PNG that can possibly be used to hide the flag. After researching, we may find that a PNG image is actually made of small blocks 4-bytes data known as chunks and these chunks can be easily manipulated by software. Upon learning that, we might try to examine the chunks of the PNG. There are many ways to do this which you can explore but one easy way is to use [TweakPNG][TweakPNG]. On opening the file in TweakPNG, we get a list of chunks that made up the image: 
 
-![chunks]({{ site.url }}/assets/chunks.PNG)  
+![chunks]({{ site.url }}/assets/chunks.png)  
 
 Unfortunately, the flag was not directly added to the PNG as a chunk. However, we notice there is a particularly interesting tEXt chunk that had a link in its description: http://www.nusgreyhats.org/x-ctf/static/enc0de.py. Hence, we can try and visit the web page. The web site contains some python code: 
 {% highlight python %}
