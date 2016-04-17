@@ -1,0 +1,72 @@
+---
+layout: post
+title:  "X-CTF Invisible"
+date:   2016-04-13 20:42:02 +0800
+categories: jekyll update
+---
+
+I helped to set a steganography problem in the qualifiers of X-CTF that was held on 8th April to 9th April. In this blog post, I will be sharing about how to solve this challenge. 
+
+#### **The Problem** 
+Here's the problem: 
+
+![xctf-qn]({{ site.url }}/assets/xctf-qn.PNG)
+
+When you click the Wonder Woman link, you find the following image: 
+
+![wonder-woman]({{ site.url }}/assets/WW-png_.png) 
+ 
+#### **The Solution**
+We know that the challenge is a steganography problem. Hence, we would expect the flag to be embedded in the image provided. 
+
+Firstly, we examine the file type of the image and we realise that it is a Portable Network Graphic (PNG). With that information, we can do a quick search and find out about some characteristics of a PNG that can possibly be used to hide the flag. After researching, we may find that a PNG image is actually made of small blocks 4-bytes data known as chunks and these chunks can be easily manipulated by software. Upon learning that, we might try to examine the chunks of the PNG. There are many ways to do this which you can explore but one easy way is to use [TweakPNG][TweakPNG]. On opening the file in TweakPNG, we get a list of chunks that made up the image: 
+
+![chunks]({{ site.url }}/assets/chunks.PNG)  
+
+Unfortunately, the flag was not directly added to the PNG as a chunk. However, we notice there is a particularly interesting tEXt chunk that had a link in its description: http://www.nusgreyhats.org/x-ctf/static/enc0de.py. Hence, we can try and visit the web page. The web site contains some python code: 
+{% highlight python %}
+import Image, zlib, struct
+
+image_old = Image.open("invisble.png")
+pix_old = image_old.load()
+
+image_new = Image.new('RGB',(image_old.size[0],image_old.size[1]),'black')
+pix_new = image_new.load()
+
+code = 'THE_SECRET_KEY_FIND_IT'
+
+i=0
+for x in range(image_old.size[0]):
+	for y in range(image_old.size[1]):
+		if x == 0 and y < len(code):
+			pix_new[x,y] = (pix_old[x,y][0],pix_old[x,y][1],ord(code[y])^0x13^0x37)
+		else:
+			pix_new[x,y] = (pix_old[x,y][0],pix_old[x,y][1],pix_old[x,y][2])
+
+image_new.save("invisble_.png")
+{% endhighlight %}
+
+After reading and understanding the code, we realise that this is the code that was used to embed the flag in the image! The flag of the challenge has been added to the first column of the RGB values of the image (the B values). Hence, we can write a short piece of code to retrieve the flag:  
+
+{% highlight python %}
+import Image, zlib, struct
+
+image = Image.open("WW-png_.png")
+pix = image.load()
+array = []
+
+for y in range(image.size[1]):
+    array.append(pix[0,y][2])
+
+for num in array:
+    char_ord = num^0x37^0x13
+    char = chr(char_ord)
+    print char,
+{% endhighlight %}
+
+Finally, we obtain the flag `XCTF{Pr1nc3ss_D1ana_0f_Th3my5c1ra}` after executing the code. 
+
+For more problems from the X-CTF qualifiers, it is still available [here][x-ctf-qual]. 
+
+[TweakPNG]: http://entropymine.com/jason/tweakpng/
+[x-ctf-qual]: http://open.nusgreyhats.org/
